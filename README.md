@@ -42,7 +42,7 @@ python manage.py migrate
 ```bash
 python manage.py runserver
 ```
-Открыть в браузере: [http://127.0.0.1:8001/](http://127.0.0.1:8001/)
+Открыть в браузере: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 
 ---
 
