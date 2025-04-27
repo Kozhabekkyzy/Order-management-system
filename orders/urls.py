@@ -2,17 +2,19 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
     OrderViewSet,
+    OrderListView,
     order_list,
     order_create,
     order_update,
     order_delete,
-    order_update_status,   # ✅ Добавляем новую вьюшку
+    order_update_status,
     revenue_report,
-    revenue,               # ✅ Добавляем новую вьюшку для расчета выручки
+    revenue,
 )
 
 router = DefaultRouter()
 router.register(r'orders', OrderViewSet, basename='order')  # API orders/
+
 
 urlpatterns = [
     path('', order_list, name='order_list'),                        # Список заказов

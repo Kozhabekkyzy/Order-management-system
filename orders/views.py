@@ -4,9 +4,12 @@ from rest_framework.response import Response
 from rest_framework import viewsets, status
 from django.utils import timezone  # ✅ для фильтрации по датам
 
+from rest_framework import generics
+from .serializers import OrderSerializer
+
 from .models import Order, Status, Item
-from orders.serializers import OrderSerializer
-from orders.actions import order_total_price
+from .serializers import OrderSerializer
+from .actions import order_total_price
 from .forms import OrderForm
 from .actions import order_total_price
 
@@ -79,6 +82,22 @@ def order_delete(request, pk):
     return render(request, 'orders/order_confirm_delete.html', {'order': order})
 
 # API через DRF
+
+class OrderListView(generics.ListCreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+class OrderCreateView(generics.CreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+class OrderUpdateView(generics.UpdateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+class OrderDeleteView(generics.DestroyAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
@@ -169,11 +188,13 @@ def revenue(request):
 
         if start_date and end_date:
             paid_orders = Order.objects.filter(
-                status__name="оплачено",
+                status_id=3,
                 created_at__range=[start_date, end_date]
             )
         else:
-            paid_orders = Order.objects.filter(status__name="оплачено")
+            paid_orders = Order.objects.filter(status_id=3)
+
+        print(paid_orders)
 
         total_revenue = sum(order.total_price for order in paid_orders)
 
